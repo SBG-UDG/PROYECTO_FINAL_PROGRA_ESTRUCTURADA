@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_STUDENTS 200
 #define MAX_STRING_SIZE 100
@@ -18,17 +19,24 @@ typedef struct{
 } student_type;
 
 typedef struct{
-    char school_name[MAX_STRING_SIZE];
+    char name[MAX_STRING_SIZE];
+    char initials[6];
     int amount_of_students;
 } school_info_type;
 
 void print_main_menu();
 void enter_student_data(student_type *student_p);
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type school_data[MAX_STUDENTS]);
+void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_info_type school);
 
 int main(){
-    student_type school[MAX_STUDENTS];
+    school_info_type school;
+    student_type school_students[MAX_STUDENTS];
+
     int option = 0;
+    school.amount_of_students = 0;
+    strcpy(school.initials, "CUCEI");
+    strcpy(school.name, "Centro Universitario de Ciencias Exactas e Ingenierias");
+
     while(option != 6){
         print_main_menu();
         scanf("%d", &option);
@@ -36,13 +44,10 @@ int main(){
 
         switch(option){
             case 1:
-                for(int i = 0; i < MAX_STUDENTS; i++){
-                    printf("Ingresando datos para el estudiante numero %d:\n", i + 1);
-                    enter_student_data(&school[i]);
-                }
+                enter_student_data(&school_students);
                 break;
             case 5:
-                dump_students_to_file(FILE_NAME, school);
+                dump_students_to_file(FILE_NAME, school_students, school);
                 printf("Datos guardados en el archivo [%s]\n", FILE_NAME);
                 break;
             case 6:
@@ -89,22 +94,22 @@ void enter_student_data(student_type *student_p){
     getchar();
 }
 
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type school_data[MAX_STUDENTS]){
+void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_info_type school){
     FILE *f = fopen(dump_file_name, "w");
     if(f == NULL){
         printf("Error opening file [%s] for writing.\n", dump_file_name);
         exit(1);
     }
 
-    fprintf(f, "<< Datos de estudiantes >>\n");
+    fprintf(f, "<< Estudiantes %s >>\n", school.name);
     fprintf(f, "-----------------------\n");
     for(int i = 0; i < MAX_STUDENTS; i++){
         fprintf(f, "Numero de estudiante: %d:\n", i + 1);
-        fprintf(f, "Nombre: %s\n", school_data[i].name);
-        fprintf(f, "Edad: %d\n", school_data[i].age);
-        fprintf(f, "Semestre: %d\n", school_data[i].semester);
-        fprintf(f, "Carrera: %s\n", school_data[i].degree);
-        fprintf(f, "Promedio: %.2f\n", school_data[i].avg_grade);
+        fprintf(f, "Nombre: %s\n", students_data[i].name);
+        fprintf(f, "Edad: %d\n", students_data[i].age);
+        fprintf(f, "Semestre: %d\n", students_data[i].semester);
+        fprintf(f, "Carrera: %s\n", students_data[i].degree);
+        fprintf(f, "Promedio: %.2f\n", students_data[i].avg_grade);
         fprintf(f, "-----------------------\n");
     }
 
