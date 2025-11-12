@@ -17,14 +17,42 @@ typedef struct{
     float avg_grade;
 } student_type;
 
+typedef struct{
+    char school_name[MAX_STRING_SIZE];
+    int amount_of_students;
+} school_info_type;
+
 void print_main_menu();
 void enter_student_data(student_type *student_p);
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type school_data[MAX_STUDENTS]);
 
 int main(){
-
     student_type school[MAX_STUDENTS];
-    dump_students_to_file("student_dump.txt", school);
+    int option = 0;
+    while(option != 6){
+        print_main_menu();
+        scanf("%d", &option);
+        getchar();
+
+        switch(option){
+            case 1:
+                for(int i = 0; i < MAX_STUDENTS; i++){
+                    printf("Ingresando datos para el estudiante numero %d:\n", i + 1);
+                    enter_student_data(&school[i]);
+                }
+                break;
+            case 5:
+                dump_students_to_file(FILE_NAME, school);
+                printf("Datos guardados en el archivo [%s]\n", FILE_NAME);
+                break;
+            case 6:
+                printf("Saliendo del programa...\n");
+                break;
+            default:
+                printf("Opcion no valida. Intente de nuevo.\n");
+                break;
+        }
+    }
 
     return 0;
 }
