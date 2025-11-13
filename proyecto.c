@@ -26,8 +26,8 @@ typedef struct{
 } school_type;
 
 void print_main_menu();
-void enter_student_data(student_type *student_p);
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_type school);
+void enter_new_student(school_type *school_p);
+void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school);
 
 int main(){
     school_type school;
@@ -45,10 +45,10 @@ int main(){
 
         switch(option){
             case 1:
-                enter_student_data(&school_students);
+                enter_new_student(&school_students);
                 break;
             case 5:
-                dump_students_to_file(FILE_NAME, school_students, school);
+                dump_students_to_file(FILE_NAME, school);
                 printf("Datos guardados en el archivo [%s]\n", FILE_NAME);
                 break;
             case 6:
@@ -59,7 +59,7 @@ int main(){
                 break;
         }
     }
-
+    
     return 0;
 }
 
@@ -75,7 +75,12 @@ void print_main_menu(){
     printf("Seleccione una opcion: ");
 }
 
-void enter_student_data(student_type *student_p){
+void enter_new_student(school_type *school_p){
+
+    int student_number = school_p->amount_of_students;
+    printf("%i", student_number);
+    student_type *student_p = &school_p->students[student_number];
+
     printf("Ingrese el nombre del estudiante: ");
     fgets(student_p->name, MAX_STRING_SIZE, stdin);
 
@@ -93,18 +98,24 @@ void enter_student_data(student_type *student_p){
     printf("Ingrese el promedio del estudiante: ");
     scanf("%f", &student_p->avg_grade);
     getchar();
+
+    school_p->amount_of_students++;
 }
 
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_type school){
+void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school){
+    
     FILE *f = fopen(dump_file_name, "w");
+    
     if(f == NULL){
-        printf("Error opening file [%s] for writing.\n", dump_file_name);
+        printf("Error opening file '%s' for writing.\n", dump_file_name);
         exit(1);
     }
 
+    student_type *students_data = school.students;
+
     fprintf(f, "<< Estudiantes %s >>\n", school.name);
     fprintf(f, "-----------------------\n");
-    for(int i = 0; i < MAX_STUDENTS; i++){
+    for(int i = 0; i < school.amount_of_students; i++){
         fprintf(f, "Numero de estudiante: %d:\n", i + 1);
         fprintf(f, "Nombre: %s\n", students_data[i].name);
         fprintf(f, "Edad: %d\n", students_data[i].age);
