@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define CLEAR_SCREEN_NEWLINES 20
 #define MAX_STUDENTS 200
 #define MAX_STRING_SIZE 100
 #define FILE_NAME "students.txt"
@@ -25,8 +26,10 @@ typedef struct{
     int amount_of_students;
 } school_type;
 
+void clear_screen_crude();
 void print_main_menu();
 void enter_new_student(school_type *school_p);
+void remove_student_by_number(school_type *school_p);
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school);
 
 int main(){
@@ -42,6 +45,8 @@ int main(){
         print_main_menu();
         scanf("%d", &option);
         getchar();
+
+        clear_screen_crude();
 
         switch(option){
             case 1:
@@ -61,6 +66,12 @@ int main(){
     }
     
     return 0;
+}
+
+void clear_screen_crude(){
+    for (int i = 0; i < CLEAR_SCREEN_NEWLINES; i++){
+        printf("\n");
+    }
 }
 
 void print_main_menu(){
@@ -100,6 +111,37 @@ void enter_new_student(school_type *school_p){
     getchar();
 
     school_p->amount_of_students++;
+}
+
+void remove_student_by_number(school_type *school_p){
+    
+    if (school_p->amount_of_students == 0){
+        printf("No hay estudiantes registrados para eliminar.\n");
+        return;
+    }
+    
+    int student_number;
+
+    printf("Ingrese el numero de estudiante: ");
+    scanf("%d", &student_number);
+
+    if (student_number < 1 || student_number > school_p->amount_of_students){
+        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+        return;
+    }
+
+    int index_to_remove = student_number - 1;
+    char removed_name[MAX_STRING_SIZE];
+    strcpy(removed_name, school_p->students[index_to_remove].name);
+
+    for (int i = index_to_remove; i < school_p->amount_of_students - 1; i++){
+        school_p->students[i] = school_p->students[i + 1];
+    }
+
+    school_p->amount_of_students--;
+
+    printf("\nEstudiante '%s' (numero %d) eliminado exitosamente.\n", removed_name, student_number);
+    printf("Total de estudiantes ahora: %d\n", school_p->amount_of_students);
 }
 
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school){
