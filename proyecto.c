@@ -19,17 +19,18 @@ typedef struct{
 } student_type;
 
 typedef struct{
+    student_type students[MAX_STUDENTS];
     char name[MAX_STRING_SIZE];
     char initials[6];
     int amount_of_students;
-} school_info_type;
+} school_type;
 
 void print_main_menu();
 void enter_student_data(student_type *student_p);
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_info_type school);
+void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_type school);
 
 int main(){
-    school_info_type school;
+    school_type school;
     student_type school_students[MAX_STUDENTS];
 
     int option = 0;
@@ -94,7 +95,7 @@ void enter_student_data(student_type *student_p){
     getchar();
 }
 
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_info_type school){
+void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], student_type students_data[MAX_STUDENTS], school_type school){
     FILE *f = fopen(dump_file_name, "w");
     if(f == NULL){
         printf("Error opening file [%s] for writing.\n", dump_file_name);
