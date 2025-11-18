@@ -7,10 +7,18 @@ SISTEMA DE GESTION DE ESTUDIANTES
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <time.h>
+    #include <unistd.h>
+#endif
+
 #define CLEAR_SCREEN_NEWLINES 20
 #define MAX_STUDENTS 200
 #define MAX_STRING_SIZE 100
 #define FILE_NAME "students.txt"
+#define STANDAR_SLEEP_MS 1500
 
 typedef struct{
     int age;
@@ -32,6 +40,7 @@ void print_main_menu();
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school);
+void sleep_ms(int milliseconds);
 
 int main(){
     school_type school;
@@ -75,6 +84,17 @@ void clear_screen_crude(){
     }
 }
 
+void sleep_ms(int milliseconds) {
+    #ifdef _WIN32
+        Sleep(milliseconds);
+    #else
+        struct timespec ts;
+        ts.tv_sec = milliseconds / 1000;
+        ts.tv_nsec = (milliseconds % 1000) * 1000000;
+        while (nanosleep(&ts, &ts) != 0) {}
+    #endif
+}
+
 void print_main_menu(){
     printf("=== Menu de opciones ===\n");
     printf("1. Ingresar datos de estudiante\n");
@@ -112,6 +132,9 @@ void enter_new_student(school_type *school_p){
     getchar();
 
     school_p->amount_of_students++;
+
+    printf("\nEstudiante agregado!");
+    sleep_ms(STANDAR_SLEEP_MS);
 }
 
 void remove_student_by_number(school_type *school_p){
