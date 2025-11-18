@@ -166,6 +166,7 @@ void remove_student_by_number(school_type *school_p){
 
     printf("\nEstudiante '%s' (numero %d) eliminado exitosamente.\n", removed_name, student_number);
     printf("Total de estudiantes ahora: %d\n", school_p->amount_of_students);
+    sleep_ms(STANDAR_SLEEP_MS);
 }
 
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school){
@@ -192,4 +193,7 @@ void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type sch
     }
 
     fclose(f);
+
+    printf("\nInformacion de estudiantes exportada en: %s", dump_file_name);
+    sleep_ms(STANDAR_SLEEP_MS);
 }
