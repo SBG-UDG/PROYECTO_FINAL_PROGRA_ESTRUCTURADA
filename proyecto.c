@@ -29,6 +29,7 @@ typedef struct{
 
 void clear_screen_crude();
 void print_main_menu();
+int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number);
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
 void modify_student_by_number(school_type *school_p);
@@ -103,6 +104,28 @@ void print_main_menu(){
     printf("Seleccione una opcion: ");
 }
 
+int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number){
+    
+    if (school.amount_of_students == 0){
+        printf("No hay estudiantes registrados en la escuela.\n");
+        //sleep(STANDARD_SLEEP_MS);
+        return 0;
+    }
+    
+    int student_number;
+
+    printf("Ingrese el numero de estudiante: ");
+    scanf("%d", &student_number);
+
+    if (student_number < 1 || student_number > school.amount_of_students){
+        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+        //sleep(STANDARD_SLEEP_MS);
+        return 0;
+    }
+
+    return student_number; // Student exists
+}
+
 void enter_new_student(school_type *school_p){
 
     int student_number = school_p->amount_of_students;
@@ -132,18 +155,8 @@ void enter_new_student(school_type *school_p){
 
 void remove_student_by_number(school_type *school_p){
     
-    if (school_p->amount_of_students == 0){
-        printf("No hay estudiantes registrados para eliminar.\n");
-        return;
-    }
-    
-    int student_number;
-
-    printf("Ingrese el numero de estudiante: ");
-    scanf("%d", &student_number);
-
-    if (student_number < 1 || student_number > school_p->amount_of_students){
-        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p, student_number);
+    if (student_number == 0){
         return;
     }
 
