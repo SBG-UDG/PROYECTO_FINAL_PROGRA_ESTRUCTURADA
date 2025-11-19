@@ -32,8 +32,8 @@ void print_main_menu();
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
 void modify_student_by_number(school_type *school_p);
-void show_student_by_number(school_type school);
-void show_all_students(school_type school);
+void show_student_by_number(school_type *school_p);
+void show_all_students(school_type *school_p);
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school);
 
 int main(){
@@ -199,11 +199,36 @@ void modify_student_by_number(school_type *school_p){
     //sleep(STANDARD_SLEEP_MS);
 }
 
-void show_student_by_number(school_type school){
-    // Function implementation goes here
+void show_student_by_number(school_type *school_p){
+
+    if (school_p->amount_of_students == 0){
+        printf("No hay estudiantes registrados para modificar.\n");
+        return;
+    }
+    
+    int student_number;
+
+    printf("Ingrese el numero de estudiante: ");
+    scanf("%d", &student_number);
+
+    if (student_number < 1 || student_number > school_p->amount_of_students){
+        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+        return;
+    }
+
+    student_type *student_p = &school_p->students[student_number - 1];
+
+    printf("Datos del estudiante numero %d:\n", student_number);
+    printf("Nombre: %s", student_p->name);
+    printf("Edad: %d\n", student_p->age);
+    printf("Semestre: %d\n", student_p->semester);
+    printf("Carrera: %s", student_p->degree);
+    printf("Promedio: %.2f\n", student_p->avg_grade);
+
+    getchar(); // Require ENTER to continue
 }
 
-void show_all_students(school_type school){
+void show_all_students(school_type *school_p){
     // Function implementation goes here
 }
 
