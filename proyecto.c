@@ -33,9 +33,9 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
 void modify_student_by_number(school_type *school_p);
-void show_student_by_number(school_type *school_p);
-void show_all_students(school_type *school_p);
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school);
+void show_student_by_number(school_type school);
+void show_all_students(school_type school);
+void dump_students_to_file(const char *dump_file_name, school_type school);
 
 int main(){
     school_type school;
@@ -61,13 +61,13 @@ int main(){
                 remove_student_by_number(&school);
                 break;
             case 3:
-                //modify_student_by_number(&school);
+                modify_student_by_number(&school);
                 break;
             case 4:
-                //show_student_by_number(school);
+                show_student_by_number(school);
                 break;
             case 5:
-                //show_all_students(school);
+                show_all_students(school);
                 break;
             case 6:
                 dump_students_to_file(FILE_NAME, school);
@@ -111,8 +111,6 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
         //sleep(STANDARD_SLEEP_MS);
         return 0;
     }
-    
-    int student_number;
 
     printf("Ingrese el numero de estudiante: ");
     scanf("%d", &student_number);
@@ -202,14 +200,14 @@ void modify_student_by_number(school_type *school_p){
     //sleep(STANDARD_SLEEP_MS);
 }
 
-void show_student_by_number(school_type *school_p){
+void show_student_by_number(school_type school){
 
-    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p, student_number);
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(school, student_number);
     if (student_number == 0){
         return;
     }
 
-    student_type *student_p = &school_p->students[student_number - 1];
+    student_type *student_p = &school.students[student_number - 1];
 
     printf("Datos del estudiante numero %d:\n", student_number);
     printf("Nombre: %s", student_p->name);
@@ -221,11 +219,33 @@ void show_student_by_number(school_type *school_p){
     getchar(); // Require ENTER to continue
 }
 
-void show_all_students(school_type *school_p){
-    // Function implementation goes here
+void show_all_students(school_type school){
+    if (school.amount_of_students == 0){
+        printf("\nNo hay estudiantes registrados para mostrar.\n");
+        //sleep(STANDARD_SLEEP_MS);
+        return;
+    }
+
+    student_type *students_data = school.students;
+
+    int j = 0, k = 0;
+
+    printf("<< Estudiantes %s (%s) >>\n", school.name, school.initials);
+    printf("-----------------------\n");
+    for(int i = 0; i < school.amount_of_students; i++){
+        printf("Numero de estudiante: %d:\n", i + 1);
+        printf("Nombre: %s", students_data[i].name);
+        printf("Edad: %d\n", students_data[i].age);
+        printf("Semestre: %d\n", students_data[i].semester);
+        printf("Carrera: %s", students_data[i].degree);
+        printf("Promedio: %.2f\n", students_data[i].avg_grade);
+        printf("-----------------------\n");
+    }
+
+    getchar(); // Require ENTER to continue
 }
 
-void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school){
+void dump_students_to_file(const char *dump_file_name, school_type school){
     
     if (school.amount_of_students == 0){
         printf("\nNo hay estudiantes registrados para guardar en el archivo.\n");
