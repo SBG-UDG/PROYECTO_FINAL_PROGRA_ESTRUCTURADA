@@ -176,18 +176,8 @@ void remove_student_by_number(school_type *school_p){
 
 void modify_student_by_number(school_type *school_p){
     
-    if (school_p->amount_of_students == 0){
-        printf("No hay estudiantes registrados para modificar.\n");
-        return;
-    }
-    
-    int student_number;
-
-    printf("Ingrese el numero de estudiante: ");
-    scanf("%d", &student_number);
-
-    if (student_number < 1 || student_number > school_p->amount_of_students){
-        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p, student_number);
+    if (student_number == 0){
         return;
     }
 
@@ -214,18 +204,8 @@ void modify_student_by_number(school_type *school_p){
 
 void show_student_by_number(school_type *school_p){
 
-    if (school_p->amount_of_students == 0){
-        printf("No hay estudiantes registrados para modificar.\n");
-        return;
-    }
-    
-    int student_number;
-
-    printf("Ingrese el numero de estudiante: ");
-    scanf("%d", &student_number);
-
-    if (student_number < 1 || student_number > school_p->amount_of_students){
-        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p, student_number);
+    if (student_number == 0){
         return;
     }
 
@@ -247,16 +227,23 @@ void show_all_students(school_type *school_p){
 
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school){
     
+    if (school.amount_of_students == 0){
+        printf("\nNo hay estudiantes registrados para guardar en el archivo.\n");
+        //sleep(STANDARD_SLEEP_MS);
+        return;
+    }
+    
     FILE *f = fopen(dump_file_name, "w");
     
     if(f == NULL){
-        printf("Error opening file '%s' for writing.\n", dump_file_name);
-        exit(1);
+        printf("\nError abriendo el archivo '%s'.\n", dump_file_name);
+        //sleep(STANDARD_SLEEP_MS);
+        return;
     }
 
     student_type *students_data = school.students;
 
-    fprintf(f, "<< Estudiantes %s >>\n", school.name);
+    fprintf(f, "<< Estudiantes %s (%s) >>\n", school.name, school.initials);
     fprintf(f, "-----------------------\n");
     for(int i = 0; i < school.amount_of_students; i++){
         fprintf(f, "Numero de estudiante: %d:\n", i + 1);
