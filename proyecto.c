@@ -31,6 +31,9 @@ void clear_screen_crude();
 void print_main_menu();
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
+void modify_student_by_number(school_type *school_p);
+void show_student_by_number(school_type school);
+void show_all_students(school_type school);
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school);
 
 int main(){
@@ -53,11 +56,23 @@ int main(){
             case 1:
                 enter_new_student(&school_students);
                 break;
+            case 2:
+                remove_student_by_number(&school);
+                break;
+            case 3:
+                //modify_student_by_number(&school);
+                break;
+            case 4:
+                //show_student_by_number(school);
+                break;
             case 5:
+                //show_all_students(school);
+                break;
+            case 6:
                 dump_students_to_file(FILE_NAME, school);
                 printf("Datos guardados en el archivo [%s]\n", FILE_NAME);
                 break;
-            case 6:
+            case 7:
                 printf("Saliendo del programa...\n");
                 break;
             default:
@@ -79,10 +94,11 @@ void print_main_menu(){
     printf("=== Menu de opciones ===\n");
     printf("1. Ingresar datos de estudiante\n");
     printf("2. Remover estudiante\n");
-    printf("3. Mostrar datos de estudiante\n");
-    printf("4. Mostrar todos los estudiantes\n");
-    printf("5. Guardar datos en archivo\n");
-    printf("6. Salir\n");
+    printf("3. Modificar datos de estudiante\n");
+    printf("4. Mostrar datos de estudiante\n");
+    printf("5. Mostrar todos los estudiantes\n");
+    printf("6. Guardar datos en archivo\n");
+    printf("7. Salir\n");
     printf("=======================\n");
     printf("Seleccione una opcion: ");
 }
@@ -143,6 +159,52 @@ void remove_student_by_number(school_type *school_p){
 
     printf("\nEstudiante '%s' (numero %d) eliminado exitosamente.\n", removed_name, student_number);
     printf("Total de estudiantes ahora: %d\n", school_p->amount_of_students);
+}
+
+void modify_student_by_number(school_type *school_p){
+    
+    if (school_p->amount_of_students == 0){
+        printf("No hay estudiantes registrados para modificar.\n");
+        return;
+    }
+    
+    int student_number;
+
+    printf("Ingrese el numero de estudiante: ");
+    scanf("%d", &student_number);
+
+    if (student_number < 1 || student_number > school_p->amount_of_students){
+        printf("\nError: El estudiante numero %d no existe.\n", student_number);
+        return;
+    }
+
+    student_type *student_p = &school_p->students[student_number - 1];
+
+    printf("Modificando datos del estudiante [%d] '%s'\n", student_number, student_p->name);
+    printf("Ingrese el nuevo nombre del estudiante: ");
+    fgets(student_p->name, MAX_STRING_SIZE, stdin);
+    printf("Ingrese la nueva edad del estudiante: ");
+    scanf("%d", &student_p->age);
+    getchar();
+    printf("Ingrese el nuevo semestre del estudiante: ");
+    scanf("%d", &student_p->semester);
+    getchar();
+    printf("Ingrese la nueva carrera del estudiante: ");
+    fgets(student_p->degree, MAX_STRING_SIZE, stdin);
+    printf("Ingrese el nuevo promedio del estudiante: ");
+    scanf("%f", &student_p->avg_grade);
+    getchar();
+
+    printf("\nDatos del estudiante numero %d modificados exitosamente.\n", student_number);
+    //sleep(STANDARD_SLEEP_MS);
+}
+
+void show_student_by_number(school_type school){
+    // Function implementation goes here
+}
+
+void show_all_students(school_type school){
+    // Function implementation goes here
 }
 
 void dump_students_to_file(char dump_file_name[MAX_STRING_SIZE], school_type school){
