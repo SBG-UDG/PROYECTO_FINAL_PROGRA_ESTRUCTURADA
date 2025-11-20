@@ -38,7 +38,7 @@ typedef struct{
 // Utility functions
 void clear_screen_crude();
 void sleep_ms(int milliseconds);
-int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number);
+int check_student_exists_by_number_and_students_more_than_zero(school_type school);
 
 // Menu and functionality
 void print_main_menu();
@@ -57,6 +57,8 @@ int main(){
     school.amount_of_students = 0;
     strcpy(school.initials, "CUCEI");
     strcpy(school.name, "Centro Universitario de Ciencias Exactas e Ingenierias");
+
+    clear_screen_crude();
 
     while(option != 6){
         printf("=== %s ===\n", school.initials);
@@ -130,8 +132,10 @@ void print_main_menu(){
     printf("Seleccione una opcion: ");
 }
 
-int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number){
+int check_student_exists_by_number_and_students_more_than_zero(school_type school){
     
+    int student_number = 0;
+
     if (school.amount_of_students == 0){
         printf("No hay estudiantes registrados en la escuela.\n");
         sleep_ms(STANDARD_SLEEP_MS);
@@ -152,12 +156,17 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
 
 void enter_new_student(school_type *school_p){
 
+    char buffer[MAX_STRING_SIZE];
+
     int student_number = school_p->amount_of_students;
     printf(":::: Estudiante numero: %i ::::\n", student_number);
     student_type *student_p = &school_p->students[student_number];
 
     printf("Ingrese el nombre del estudiante: ");
-    fgets(student_p->name, MAX_STRING_SIZE, stdin);
+    fgets(buffer, MAX_STRING_SIZE, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0'; // Remove trailing newline
+    strcpy(student_p->name, buffer);
+
 
     printf("Ingrese la edad del estudiante: ");
     scanf("%d", &student_p->age);
@@ -168,7 +177,9 @@ void enter_new_student(school_type *school_p){
     getchar();
 
     printf("Ingrese la carrera del estudiante: ");
-    fgets(student_p->degree, MAX_STRING_SIZE, stdin);
+    fgets(buffer, MAX_STRING_SIZE, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
+    strcpy(student_p->degree, buffer);
 
     printf("Ingrese el promedio del estudiante: ");
     scanf("%f", &student_p->avg_grade);
@@ -182,7 +193,7 @@ void enter_new_student(school_type *school_p){
 
 void remove_student_by_number(school_type *school_p){
     
-    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p, student_number);
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p);
     if (student_number == 0){
         return;
     }
@@ -204,24 +215,35 @@ void remove_student_by_number(school_type *school_p){
 
 void modify_student_by_number(school_type *school_p){
     
-    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p, student_number);
+    char buffer[MAX_STRING_SIZE];
+
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(*school_p);
     if (student_number == 0){
         return;
     }
 
     student_type *student_p = &school_p->students[student_number - 1];
 
-    printf("Modificando datos del estudiante [%d] '%s'\n", student_number, student_p->name);
+    printf("Modificando datos del estudiante '%s' \n", student_number, student_p->name);
+    
     printf("Ingrese el nuevo nombre del estudiante: ");
-    fgets(student_p->name, MAX_STRING_SIZE, stdin);
+    fgets(buffer, MAX_STRING_SIZE, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
+    strcpy(student_p->name, buffer);
+    
     printf("Ingrese la nueva edad del estudiante: ");
     scanf("%d", &student_p->age);
     getchar();
+    
     printf("Ingrese el nuevo semestre del estudiante: ");
     scanf("%d", &student_p->semester);
     getchar();
+    
     printf("Ingrese la nueva carrera del estudiante: ");
-    fgets(student_p->degree, MAX_STRING_SIZE, stdin);
+    fgets(buffer, MAX_STRING_SIZE, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
+    strcpy(student_p->degree, buffer);
+    
     printf("Ingrese el nuevo promedio del estudiante: ");
     scanf("%f", &student_p->avg_grade);
     getchar();
@@ -232,7 +254,7 @@ void modify_student_by_number(school_type *school_p){
 
 void show_student_data_by_number(school_type school){
 
-    int student_number = check_student_exists_by_number_and_students_more_than_zero(school, student_number);
+    int student_number = check_student_exists_by_number_and_students_more_than_zero(school);
     if (student_number == 0){
         return;
     }
@@ -265,7 +287,7 @@ void show_all_students(school_type school){
     printf("<< Estudiantes %s (%s) >>\n", school.name, school.initials);
     printf("-----------------------\n");
     for(int i = 0; i < school.amount_of_students; i++){
-        printf("Numero de estudiante: %d:\n", i + 1);
+        printf("Numero de estudiante: %d\n", i + 1);
         printf("Nombre: %s", students_data[i].name);
         printf("Edad: %d\n", students_data[i].age);
         printf("Semestre: %d\n", students_data[i].semester);
@@ -274,6 +296,7 @@ void show_all_students(school_type school){
         printf("-----------------------\n");
     }
 
+    printf("\n\nPresione [ENTER] para continuar");
     getchar(); // Require ENTER to continue
 }
 
