@@ -18,7 +18,7 @@ SISTEMA DE GESTION DE ESTUDIANTES
 #define MAX_STUDENTS 200
 #define MAX_STRING_SIZE 100
 #define FILE_NAME "students.txt"
-#define STANDARD_SLEEP_MS 1500
+#define STANDARD_SLEEP_MS 3000
 
 typedef struct{
     int age;
@@ -51,7 +51,6 @@ void dump_students_to_file(const char *dump_file_name, school_type school);
 
 int main(){
     school_type school;
-    // REMOVE student_type school_students[MAX_STUDENTS];
 
     int option = 0;
     school.amount_of_students = 0;
@@ -270,7 +269,6 @@ void show_student_data_by_number(school_type school){
     printf("Carrera: %s\n", student_p->degree);
     printf("Promedio: %.2f\n", student_p->avg_grade);
 
-    // REMOVE while (getchar() != '\n');
     printf("\n\nPresione [ENTER] para continuar");
     getchar(); // Require ENTER to continue
 }
@@ -298,7 +296,6 @@ void show_all_students(school_type school){
         printf("-----------------------\n");
     }
 
-    // REMOVE while (getchar() != '\n');
     printf("\n\nPresione [ENTER] para continuar");
     getchar(); // Require ENTER to continue
 }
