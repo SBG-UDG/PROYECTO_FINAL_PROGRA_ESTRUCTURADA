@@ -14,7 +14,7 @@ SISTEMA DE GESTION DE ESTUDIANTES
     #include <unistd.h>
 #endif
 
-#define CLEAR_SCREEN_NEWLINES 20
+#define CLEAR_SCREEN_NEWLINES 40
 #define MAX_STUDENTS 200
 #define MAX_STRING_SIZE 100
 #define FILE_NAME "students.txt"
