@@ -36,15 +36,16 @@ typedef struct{
 } school_type;
 
 void clear_screen_crude();
+void sleep_ms(int milliseconds);
 void print_main_menu();
 int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number);
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
+void show_student_data_by_number(school_type *school_p);
 void modify_student_by_number(school_type *school_p);
 void show_student_by_number(school_type school);
 void show_all_students(school_type school);
 void dump_students_to_file(const char *dump_file_name, school_type school);
-void sleep_ms(int milliseconds);
 
 int main(){
     school_type school;
@@ -56,6 +57,7 @@ int main(){
     strcpy(school.name, "Centro Universitario de Ciencias Exactas e Ingenierias");
 
     while(option != 6){
+        printf("=== %s ===\n", school.initials);
         print_main_menu();
         scanf("%d", &option);
         getchar();
@@ -64,7 +66,7 @@ int main(){
 
         switch(option){
             case 1:
-                enter_new_student(&school_students);
+                enter_new_student(&school);
                 break;
             case 2:
                 remove_student_by_number(&school);
@@ -89,6 +91,9 @@ int main(){
                 printf("Opcion no valida. Intente de nuevo.\n");
                 break;
         }
+
+        sleep_ms(STANDAR_SLEEP_MS);
+        clear_screen_crude();
     }
     
     return 0;
@@ -147,7 +152,7 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
 void enter_new_student(school_type *school_p){
 
     int student_number = school_p->amount_of_students;
-    printf("%i", student_number);
+    printf(":::: Estudiante numero: %i ::::\n", student_number);
     student_type *student_p = &school_p->students[student_number];
 
     printf("Ingrese el nombre del estudiante: ");
@@ -171,7 +176,6 @@ void enter_new_student(school_type *school_p){
     school_p->amount_of_students++;
 
     printf("\nEstudiante agregado!");
-    sleep_ms(STANDAR_SLEEP_MS);
 }
 
 void remove_student_by_number(school_type *school_p){
@@ -240,6 +244,8 @@ void show_student_by_number(school_type school){
     printf("Carrera: %s", student_p->degree);
     printf("Promedio: %.2f\n", student_p->avg_grade);
 
+    printf("\n\nPresione [ENTER] para continuar");
+    getchar(); // Clean buffer
     getchar(); // Require ENTER to continue
 }
 
@@ -303,4 +309,8 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
 
     printf("\nInformacion de estudiantes exportada en: %s", dump_file_name);
     sleep_ms(STANDAR_SLEEP_MS);
+}
+
+void show_student_data_by_number(school_type *school_p){
+    
 }
