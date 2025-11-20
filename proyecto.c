@@ -35,10 +35,13 @@ typedef struct{
     int amount_of_students;
 } school_type;
 
+// Utility functions
 void clear_screen_crude();
 void sleep_ms(int milliseconds);
-void print_main_menu();
 int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number);
+
+// Menu and functionality
+void print_main_menu();
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
 void show_student_data_by_number(school_type school_p);
