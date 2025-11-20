@@ -18,7 +18,7 @@ SISTEMA DE GESTION DE ESTUDIANTES
 #define MAX_STUDENTS 200
 #define MAX_STRING_SIZE 100
 #define FILE_NAME "students.txt"
-#define STANDAR_SLEEP_MS 1500
+#define STANDARD_SLEEP_MS 1500
 
 typedef struct{
     int age;
@@ -177,7 +177,7 @@ void enter_new_student(school_type *school_p){
     school_p->amount_of_students++;
 
     printf("\nEstudiante agregado!");
-    sleep_ms(STANDAR_SLEEP_MS);
+    sleep_ms(STANDARD_SLEEP_MS);
 }
 
 void remove_student_by_number(school_type *school_p){
@@ -199,7 +199,7 @@ void remove_student_by_number(school_type *school_p){
 
     printf("\nEstudiante '%s' (numero %d) eliminado exitosamente.\n", removed_name, student_number);
     printf("Total de estudiantes ahora: %d\n", school_p->amount_of_students);
-    sleep_ms(STANDAR_SLEEP_MS);
+    sleep_ms(STANDARD_SLEEP_MS);
 }
 
 void modify_student_by_number(school_type *school_p){
@@ -289,7 +289,7 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
     
     if(f == NULL){
         printf("\nError abriendo el archivo '%s'.\n", dump_file_name);
-        //sleep(STANDARD_SLEEP_MS);
+        sleep(STANDARD_SLEEP_MS);
         return;
     }
 
@@ -310,5 +310,5 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
     fclose(f);
 
     printf("\nInformacion de estudiantes exportada en: %s", dump_file_name);
-    sleep_ms(STANDAR_SLEEP_MS);
+    sleep_ms(STANDARD_SLEEP_MS);
 }
