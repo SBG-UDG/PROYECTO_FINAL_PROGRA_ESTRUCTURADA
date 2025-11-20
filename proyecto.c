@@ -51,7 +51,7 @@ void dump_students_to_file(const char *dump_file_name, school_type school);
 
 int main(){
     school_type school;
-    student_type school_students[MAX_STUDENTS];
+    // REMOVE student_type school_students[MAX_STUDENTS];
 
     int option = 0;
     school.amount_of_students = 0;
@@ -145,6 +145,8 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
 
     printf("Ingrese el numero de estudiante: ");
     scanf("%d", &student_number);
+    while (getchar() != '\n');
+    
 
     if (student_number < 1 || student_number > school.amount_of_students){
         printf("\nError: El estudiante numero %d no existe.\n", student_number);
@@ -264,10 +266,10 @@ void show_student_data_by_number(school_type school){
     student_type *student_p = &school.students[student_number - 1];
 
     printf("Datos del estudiante numero %d:\n", student_number);
-    printf("Nombre: %s", student_p->name);
+    printf("Nombre: %s\n", student_p->name);
     printf("Edad: %d\n", student_p->age);
     printf("Semestre: %d\n", student_p->semester);
-    printf("Carrera: %s", student_p->degree);
+    printf("Carrera: %s\n", student_p->degree);
     printf("Promedio: %.2f\n", student_p->avg_grade);
 
     // REMOVE while (getchar() != '\n');
