@@ -60,7 +60,7 @@ int main(){
 
     clear_screen_crude();
 
-    while(option != 6){
+    while(1){
         printf("=== %s ===\n", school.initials);
         print_main_menu();
         scanf("%d", &option);
@@ -86,12 +86,11 @@ int main(){
                 break;
             case 6:
                 dump_students_to_file(FILE_NAME, school);
-                printf("Datos guardados en el archivo [%s]\n", FILE_NAME);
                 break;
             case 7:
                 printf("Saliendo del programa...\n");
                 sleep_ms(STANDARD_SLEEP_MS);
-                return 0;
+                exit(0);
             default:
                 printf("Opcion no valida. Intente de nuevo.\n");
                 sleep_ms(STANDARD_SLEEP_MS);
@@ -161,7 +160,7 @@ void enter_new_student(school_type *school_p){
     char buffer[MAX_STRING_SIZE];
 
     int student_number = school_p->amount_of_students;
-    printf(":::: Estudiante numero: %i ::::\n", student_number);
+    printf(":::: Estudiante numero: %i ::::\n", student_number + 1);
     student_type *student_p = &school_p->students[student_number];
 
     printf("Ingrese el nombre del estudiante: ");
@@ -225,7 +224,9 @@ void modify_student_by_number(school_type *school_p){
 
     student_type *student_p = &school_p->students[student_number - 1];
 
-    printf("Modificando datos del estudiante '%s' \n", student_number, student_p->name);
+    while (getchar() != '\n');
+
+    printf("Modificando datos del estudiante: '%s' \n", student_p->name);
     
     printf("Ingrese el nuevo nombre del estudiante: ");
     fgets(buffer, MAX_STRING_SIZE, stdin);
@@ -269,8 +270,8 @@ void show_student_data_by_number(school_type school){
     printf("Carrera: %s", student_p->degree);
     printf("Promedio: %.2f\n", student_p->avg_grade);
 
+    // REMOVE while (getchar() != '\n');
     printf("\n\nPresione [ENTER] para continuar");
-    getchar(); // Clean buffer
     getchar(); // Require ENTER to continue
 }
 
@@ -297,6 +298,7 @@ void show_all_students(school_type school){
         printf("-----------------------\n");
     }
 
+    // REMOVE while (getchar() != '\n');
     printf("\n\nPresione [ENTER] para continuar");
     getchar(); // Require ENTER to continue
 }
@@ -322,7 +324,7 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
     fprintf(f, "<< Estudiantes %s (%s) >>\n", school.name, school.initials);
     fprintf(f, "-----------------------\n");
     for(int i = 0; i < school.amount_of_students; i++){
-        fprintf(f, "Numero de estudiante: %d:\n", i + 1);
+        fprintf(f, "Numero de estudiante: %d\n", i + 1);
         fprintf(f, "Nombre: %s\n", students_data[i].name);
         fprintf(f, "Carrera: %s\n", students_data[i].degree);
         fprintf(f, "Edad: %d\n", students_data[i].age);
@@ -333,6 +335,6 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
 
     fclose(f);
 
-    printf("\nInformacion de estudiantes exportada en: %s", dump_file_name);
+    printf("Datos guardados en el archivo [%s]\n", dump_file_name);
     sleep_ms(STANDARD_SLEEP_MS);
 }
