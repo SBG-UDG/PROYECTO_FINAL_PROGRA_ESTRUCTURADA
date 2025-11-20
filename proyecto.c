@@ -77,7 +77,7 @@ int main(){
                 modify_student_by_number(&school);
                 break;
             case 4:
-                show_student_by_number(school);
+                show_student_data_by_number(school);
                 break;
             case 5:
                 show_all_students(school);
@@ -134,7 +134,7 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
     
     if (school.amount_of_students == 0){
         printf("No hay estudiantes registrados en la escuela.\n");
-        //sleep(STANDARD_SLEEP_MS);
+        sleep_ms(STANDARD_SLEEP_MS);
         return 0;
     }
 
@@ -143,7 +143,7 @@ int check_student_exists_by_number_and_students_more_than_zero(school_type schoo
 
     if (student_number < 1 || student_number > school.amount_of_students){
         printf("\nError: El estudiante numero %d no existe.\n", student_number);
-        //sleep(STANDARD_SLEEP_MS);
+        sleep_ms(STANDARD_SLEEP_MS);
         return 0;
     }
 
@@ -227,7 +227,7 @@ void modify_student_by_number(school_type *school_p){
     getchar();
 
     printf("\nDatos del estudiante numero %d modificados exitosamente.\n", student_number);
-    //sleep(STANDARD_SLEEP_MS);
+    sleep_ms(STANDARD_SLEEP_MS);
 }
 
 void show_student_data_by_number(school_type school){
@@ -254,7 +254,7 @@ void show_student_data_by_number(school_type school){
 void show_all_students(school_type school){
     if (school.amount_of_students == 0){
         printf("\nNo hay estudiantes registrados para mostrar.\n");
-        //sleep(STANDARD_SLEEP_MS);
+        sleep_ms(STANDARD_SLEEP_MS);
         return;
     }
 
@@ -281,7 +281,7 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
     
     if (school.amount_of_students == 0){
         printf("\nNo hay estudiantes registrados para guardar en el archivo.\n");
-        //sleep(STANDARD_SLEEP_MS);
+        sleep_ms(STANDARD_SLEEP_MS);
         return;
     }
     
@@ -289,7 +289,7 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
     
     if(f == NULL){
         printf("\nError abriendo el archivo '%s'.\n", dump_file_name);
-        sleep(STANDARD_SLEEP_MS);
+        sleep_ms(STANDARD_SLEEP_MS);
         return;
     }
 
