@@ -226,8 +226,6 @@ void modify_student_by_number(school_type *school_p){
 
     student_type *student_p = &school_p->students[student_number - 1];
 
-    while (getchar() != '\n');
-
     printf("Modificando datos del estudiante: '%s' \n", student_p->name);
     
     printf("Ingrese el nuevo nombre del estudiante: ");
