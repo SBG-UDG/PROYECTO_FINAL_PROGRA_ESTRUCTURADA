@@ -169,6 +169,10 @@ void enter_new_student(school_type *school_p){
     buffer[strcspn(buffer, "\n")] = '\0'; // Remove trailing newline
     strcpy(student_p->name, buffer);
 
+    printf("Ingrese la carrera del estudiante: ");
+    fgets(buffer, MAX_STRING_SIZE, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
+    strcpy(student_p->degree, buffer);
 
     printf("Ingrese la edad del estudiante: ");
     scanf("%d", &student_p->age);
@@ -177,11 +181,6 @@ void enter_new_student(school_type *school_p){
     printf("Ingrese el semestre del estudiante: ");
     scanf("%d", &student_p->semester);
     getchar();
-
-    printf("Ingrese la carrera del estudiante: ");
-    fgets(buffer, MAX_STRING_SIZE, stdin);
-    buffer[strcspn(buffer, "\n")] = '\0';
-    strcpy(student_p->degree, buffer);
 
     printf("Ingrese el promedio del estudiante: ");
     scanf("%f", &student_p->avg_grade);
@@ -291,9 +290,9 @@ void show_all_students(school_type school){
     for(int i = 0; i < school.amount_of_students; i++){
         printf("Numero de estudiante: %d\n", i + 1);
         printf("Nombre: %s\n", students_data[i].name);
+        printf("Carrera: %s\n", students_data[i].degree);
         printf("Edad: %d\n", students_data[i].age);
         printf("Semestre: %d\n", students_data[i].semester);
-        printf("Carrera: %s\n", students_data[i].degree);
         printf("Promedio: %.2f\n", students_data[i].avg_grade);
         printf("-----------------------\n");
     }
@@ -325,9 +324,9 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
     for(int i = 0; i < school.amount_of_students; i++){
         fprintf(f, "Numero de estudiante: %d:\n", i + 1);
         fprintf(f, "Nombre: %s\n", students_data[i].name);
+        fprintf(f, "Carrera: %s\n", students_data[i].degree);
         fprintf(f, "Edad: %d\n", students_data[i].age);
         fprintf(f, "Semestre: %d\n", students_data[i].semester);
-        fprintf(f, "Carrera: %s\n", students_data[i].degree);
         fprintf(f, "Promedio: %.2f\n", students_data[i].avg_grade);
         fprintf(f, "-----------------------\n");
     }
