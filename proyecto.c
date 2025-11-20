@@ -41,9 +41,8 @@ void print_main_menu();
 int check_student_exists_by_number_and_students_more_than_zero(school_type school, int student_number);
 void enter_new_student(school_type *school_p);
 void remove_student_by_number(school_type *school_p);
-void show_student_data_by_number(school_type *school_p);
+void show_student_data_by_number(school_type school_p);
 void modify_student_by_number(school_type *school_p);
-void show_student_by_number(school_type school);
 void show_all_students(school_type school);
 void dump_students_to_file(const char *dump_file_name, school_type school);
 
@@ -92,7 +91,6 @@ int main(){
                 break;
         }
 
-        sleep_ms(STANDAR_SLEEP_MS);
         clear_screen_crude();
     }
     
@@ -176,6 +174,7 @@ void enter_new_student(school_type *school_p){
     school_p->amount_of_students++;
 
     printf("\nEstudiante agregado!");
+    sleep_ms(STANDAR_SLEEP_MS);
 }
 
 void remove_student_by_number(school_type *school_p){
@@ -228,7 +227,7 @@ void modify_student_by_number(school_type *school_p){
     //sleep(STANDARD_SLEEP_MS);
 }
 
-void show_student_by_number(school_type school){
+void show_student_data_by_number(school_type school){
 
     int student_number = check_student_exists_by_number_and_students_more_than_zero(school, student_number);
     if (student_number == 0){
@@ -309,8 +308,4 @@ void dump_students_to_file(const char *dump_file_name, school_type school){
 
     printf("\nInformacion de estudiantes exportada en: %s", dump_file_name);
     sleep_ms(STANDAR_SLEEP_MS);
-}
-
-void show_student_data_by_number(school_type *school_p){
-    
 }
