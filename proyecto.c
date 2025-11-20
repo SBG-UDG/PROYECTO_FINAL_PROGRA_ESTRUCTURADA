@@ -90,9 +90,11 @@ int main(){
                 break;
             case 7:
                 printf("Saliendo del programa...\n");
-                break;
+                sleep_ms(STANDARD_SLEEP_MS);
+                return 0;
             default:
                 printf("Opcion no valida. Intente de nuevo.\n");
+                sleep_ms(STANDARD_SLEEP_MS);
                 break;
         }
 
@@ -243,7 +245,7 @@ void modify_student_by_number(school_type *school_p){
     fgets(buffer, MAX_STRING_SIZE, stdin);
     buffer[strcspn(buffer, "\n")] = '\0';
     strcpy(student_p->degree, buffer);
-    
+
     printf("Ingrese el nuevo promedio del estudiante: ");
     scanf("%f", &student_p->avg_grade);
     getchar();
@@ -288,10 +290,10 @@ void show_all_students(school_type school){
     printf("-----------------------\n");
     for(int i = 0; i < school.amount_of_students; i++){
         printf("Numero de estudiante: %d\n", i + 1);
-        printf("Nombre: %s", students_data[i].name);
+        printf("Nombre: %s\n", students_data[i].name);
         printf("Edad: %d\n", students_data[i].age);
         printf("Semestre: %d\n", students_data[i].semester);
-        printf("Carrera: %s", students_data[i].degree);
+        printf("Carrera: %s\n", students_data[i].degree);
         printf("Promedio: %.2f\n", students_data[i].avg_grade);
         printf("-----------------------\n");
     }
